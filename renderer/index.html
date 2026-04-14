@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';" />
+  <title>ATTAIN-AI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Custom title bar (draggable region) -->
+  <div id="titlebar">
+    <div id="titlebar-drag">
+      <span id="titlebar-icon">◈</span>
+      <span id="titlebar-title">ATTAIN-AI &mdash; Academic Intelligence Engine</span>
+    </div>
+    <div id="titlebar-controls">
+      <button class="wc" id="wc-min" title="Minimize">&#x2212;</button>
+      <button class="wc" id="wc-max" title="Maximize">&#x25A1;</button>
+      <button class="wc" id="wc-close" title="Close">&#x2715;</button>
+    </div>
+  </div>
+
+  <!-- Terminal body -->
+  <div id="terminal">
+    <div id="output" role="log" aria-live="polite"></div>
+
+    <!-- Input row -->
+    <div id="input-row">
+      <span id="prompt-prefix">attain-ai&nbsp;<span class="prompt-chevron">❯</span>&nbsp;</span>
+      <input id="cmd-input" type="text" autocomplete="off" spellcheck="false"
+             placeholder="type 'help' to start" aria-label="Command input" />
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

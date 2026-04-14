@@ -1,0 +1,29 @@
+{
+  "name": "attain-ai",
+  "version": "2.0.0",
+  "description": "ATTAIN-AI — Academic CO-PO Intelligence Engine",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "com.attainai.app",
+    "productName": "ATTAIN-AI",
+    "files": [
+      "**/*",
+      "!node_modules/**/*",
+      "!dist/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  }
+}

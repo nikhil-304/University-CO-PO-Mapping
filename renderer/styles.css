@@ -1,0 +1,292 @@
+/* ── Reset & base ─────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #0a0e1a;
+  --bg2:       #0d1120;
+  --bg3:       #111826;
+  --green:     #00d9a3;
+  --green-dim: #00a37a;
+  --cyan:      #00c8d4;
+  --blue:      #4dabf7;
+  --yellow:    #ffd43b;
+  --orange:    #ff9a3c;
+  --red:       #ff5f57;
+  --muted:     #4a5568;
+  --text:      #c8d6e5;
+  --text-dim:  #718096;
+  --brand:     #7c3aed;
+  --font:      'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+/* ── Title bar ───────────────────────────────────────────────────────────── */
+
+#titlebar {
+  -webkit-app-region: drag;
+  height: 32px;
+  background: #060910;
+  border-bottom: 1px solid #1a2236;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 0 16px;
+  flex-shrink: 0;
+}
+
+#titlebar-drag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--green-dim);
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+
+#titlebar-icon { color: var(--green); font-size: 14px; }
+
+#titlebar-controls {
+  -webkit-app-region: no-drag;
+  display: flex;
+  gap: 6px;
+}
+
+.wc {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+
+#wc-close { background: var(--red); }
+#wc-min   { background: var(--yellow); }
+#wc-max   { background: var(--green); }
+
+.wc:hover { filter: brightness(1.3); font-size: 8px; color: rgba(0,0,0,.6); }
+
+/* ── Terminal layout ─────────────────────────────────────────────────────── */
+
+#terminal {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 32px);
+  padding: 16px 20px 0;
+  overflow: hidden;
+}
+
+#output {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 12px;
+  line-height: 1.65;
+  scroll-behavior: smooth;
+}
+
+/* scrollbar */
+#output::-webkit-scrollbar { width: 5px; }
+#output::-webkit-scrollbar-track { background: transparent; }
+#output::-webkit-scrollbar-thumb { background: #1e2d45; border-radius: 3px; }
+
+/* ── Input row ───────────────────────────────────────────────────────────── */
+
+#input-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 0 14px;
+  border-top: 1px solid #161e30;
+  flex-shrink: 0;
+  gap: 4px;
+}
+
+#prompt-prefix {
+  color: var(--green);
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+
+.prompt-chevron { color: var(--cyan); }
+
+#cmd-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13px;
+  caret-color: var(--green);
+}
+
+#cmd-input::placeholder { color: var(--muted); }
+
+/* ── Output line types ───────────────────────────────────────────────────── */
+
+.line {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 1px 0;
+  animation: fadein .15s ease;
+}
+@keyframes fadein { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; } }
+
+.line-ts    { color: var(--muted); font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+.line-body  { flex: 1; white-space: pre-wrap; word-break: break-word; }
+
+/* prefix icons */
+.pfx-cmd   { color: var(--cyan); }
+.pfx-ai    { color: var(--brand); }
+.pfx-step  { color: var(--yellow); }
+.pfx-ok    { color: var(--green); }
+.pfx-data  { color: var(--blue); }
+.pfx-done  { color: var(--green); }
+.pfx-err   { color: var(--red); }
+.pfx-warn  { color: var(--orange); }
+.pfx-info  { color: var(--text-dim); }
+.pfx-ask   { color: var(--cyan); }
+
+/* text colours */
+.txt-cmd    { color: var(--text); }
+.txt-ai     { color: #a78bfa; font-style: italic; }
+.txt-step   { color: var(--yellow); font-weight: 600; }
+.txt-ok     { color: var(--green); }
+.txt-data   { color: var(--blue); }
+.txt-done   { color: var(--green); font-weight: 600; }
+.txt-err    { color: var(--red); }
+.txt-warn   { color: var(--orange); }
+.txt-info   { color: var(--text-dim); }
+.txt-ask    { color: var(--cyan); }
+.txt-banner { color: var(--green); }
+
+/* ── Thinking dots animation ─────────────────────────────────────────────── */
+
+.thinking .dot {
+  display: inline-block;
+  animation: blink 1.2s infinite;
+}
+.thinking .dot:nth-child(2) { animation-delay: .2s; }
+.thinking .dot:nth-child(3) { animation-delay: .4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: .2; }
+  40%           { opacity: 1; }
+}
+
+/* ── Progress bar ────────────────────────────────────────────────────────── */
+
+.progress-wrap { display: flex; align-items: center; gap: 10px; }
+.progress-bar  {
+  width: 200px; height: 6px;
+  background: #1a2236; border-radius: 3px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--green), var(--cyan));
+  border-radius: 3px;
+  transition: width .4s ease;
+}
+.progress-pct { color: var(--green); font-size: 11px; }
+
+/* ── Download buttons ────────────────────────────────────────────────────── */
+
+.dl-block {
+  margin: 10px 0 4px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  border: 1px solid var(--green-dim);
+  border-radius: 6px;
+  background: rgba(0, 217, 163, .06);
+  color: var(--green);
+  font-family: var(--font);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .2s;
+  width: fit-content;
+  -webkit-app-region: no-drag;
+}
+.dl-btn:hover {
+  background: rgba(0, 217, 163, .14);
+  border-color: var(--green);
+  transform: translateX(2px);
+}
+.dl-btn .dl-icon { font-size: 14px; }
+.dl-btn .dl-sub  { font-size: 10px; color: var(--text-dim); }
+
+/* ── Dividers ────────────────────────────────────────────────────────────── */
+
+.divider {
+  border: none;
+  border-top: 1px solid #1a2236;
+  margin: 10px 0;
+}
+
+/* ── ASCII header ────────────────────────────────────────────────────────── */
+
+.ascii-banner {
+  color: var(--green);
+  font-size: 12px;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  white-space: pre;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────────────── */
+
+.spinner {
+  display: inline-block;
+  animation: spin .8s linear infinite;
+}
+@keyframes spin {
+  from { content: '⠋'; }
+}
+
+/* ── Typing indicator line ────────────────────────────────────────────────── */
+.typing-line .line-body::after {
+  content: '▋';
+  display: inline-block;
+  animation: cursor-blink .8s step-end infinite;
+  color: var(--green);
+  margin-left: 1px;
+}
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
+
+/* ── File chip (inline file name display) ────────────────────────────────── */
+
+.file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: rgba(77, 171, 247, .1);
+  border: 1px solid rgba(77, 171, 247, .3);
+  color: var(--blue);
+  font-size: 11px;
+  margin-top: 3px;
+}
